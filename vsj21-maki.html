@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="牧 修平○ (東京工業大学）" />
-  <title>時系列データに対する説明的可視化 (和題:ゴシック16pt,1行27文字以内)* ―和文副題:ゴシック14pt</title>
+  <title>時系列データに対する説明的可視化</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -41,7 +41,7 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">時系列データに対する説明的可視化 (和題:ゴシック16pt,1行27文字以内)* ―和文副題:ゴシック14pt</h1>
+<h1 class="title">時系列データに対する説明的可視化</h1>
 <p class="subtitle">Explanatory Visualization for Time Series Data</p>
 <p class="author">牧 修平○ (東京工業大学）</p>
 </header>
@@ -52,7 +52,16 @@
 <h1 id="はじめに">はじめに</h1>
 <p>生のデータを見るだけでは分析したり理解したりするのが難しいデータに対して、その分析や理解のために可視化を行う研究はたくさん行われてきた<span class="citation" data-cites="Gschwandtner2018KnowYE">(Gschwandtner and Erhart 2018)</span> <span class="citation" data-cites="bryan2016temporal">(Bryan, Ma, and Woodring 2016)</span>。 しかし可視化によるデータの分析や理解に慣れていないユーザ、可視化だけでは理解が難しいデータを解析したいユーザがいるのため、データの分析や理解のために必ずしも可視化で満足させれるわけではない。 そこで文章と可視化によってデータの説明をする<strong>説明的可視化</strong>が使用されてる<span class="citation" data-cites="hosokawa2020scalable">(Hosokawa, Arimoto, and Wakita 2020)</span> <span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>。<span class="citation" data-cites="ynnerman2018exploranation">(Ynnerman, Löwgren, and Tibell 2018)</span></p>
 <p>時系列データは日常の気温や降水量、近年では新型コロナ感謝数の推移など様々な場面で扱われているデータである。 時系列データは必ずしも同様の事柄に対して一つのデータだけではなく複数のデータが存在することがある(新型コロナ感謝数の推移など)。 このような場合、時系列データは可視化による理解が困難になるため、説明的可視化を使ってデータの説明をするのが望ましい。 しかし今まで説明的可視化を使ってこのようなデータを説明する研究は行われてきていない。 そこで本研究では<a href="https://www.socialprogress.org/">Social Progress Imperative</a>が10年にわたって発表しているSocial Progress Indexのデータ<span class="citation" data-cites="SPI">(Social Progress Imperative n.d.)</span>(以下SPIデータ)を例として、説明的可視化による時系列データの理解を手伝う手法を提案する。</p>
-<p>2章では説明的可視化と時系列データの可視化について関連研究をまとめ、</p>
+<p>2章では説明的可視化と時系列データの可視化について関連研究をまとめ、3章でシステムの設計について述べる。 4章ではシステムのユースケースを通してシステムの有効性を説明し、5章と6章で考察とまとめを行う。</p>
+<h1 id="関連研究">関連研究</h1>
+<p>時系列データについての説明的可視化を行う上で、今まで研究されてきた説明的可視化と時系列データに対する可視化をみていく。</p>
+<p><strong>説明的可視化</strong> Latifたちは<span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>、二つの地理統計変数を理解するためにiMRというシステムを開発し説明的可視化を行っている。 地図の領域の色やその領域の上にに描かれる円の大きさを使って二つの地理統計変数を可視化するとともに、それらのデータを解析して文章を自動生成している。 図は各州の年間の死亡者数、ハリケーンの発生数に対して実際にiMRのシステムを使用した例である。 生成されている文章には、死亡者数の平均値や最大値・最小値など、統計的なデータをはじめ、「南部の州が他の週より死亡者数やハリケーンの発生数が多い」などデータからは読みとりづらい情報も組み込まれている。 iMRでは文章生成を行うプロセスを自身で定義し、ユーザーの要望に合わせてパラメータを変更することで柔軟な文章を生成している。 本研究ではデータからは読み取りづらい情報を文章にしてユーザーに伝えるために、この論文の文章生成プロセスを参考に文章を生成するプロセスを定める。</p>
+<p>Hosokawaたちは<span class="citation" data-cites="hosokawa2020scalable">(Hosokawa, Arimoto, and Wakita 2020)</span>、多変数の地理的統計量に対して指標の階層構造や地域的な階層構造に着目して説明的可視化を行っている。 HosokawaたちはSPIデータを使用しているがある年についてのみ注目して、時系列ではない二つの階層構造が含まれるデータとしてSPIデータを扱っている。 本研究では時系列ということに注目してシステムを作る。 またHosokawaたちとはことなり、地理的階層構造についてのみに着目しており、SPIの指標の階層構造についての説明的可視化は行っていない。</p>
+<p><strong>時系列データの可視化</strong> 時系列データの情報を伝えるために可視化を使った研究はいくつか存在しており<span class="citation" data-cites="bryan2016temporal">(Bryan, Ma, and Woodring 2016)</span>、その中でIllusrating Changes in Time-Series Data With Data<span class="citation" data-cites="lu2020illustrating">(Lu et al. 2020)</span>は、二つの地理統計変数データを二変数マップと動画を用いて可視化している。 図では横軸を収入、縦軸を平均寿命とした例で、ドットの動きによって過去100年で世界各国の収入や平均寿命がどのように変化していったかが分かるようになっている。 この研究では、時系列データを事前に解析し時系列データの変化の傾向が変化した期間を特定して、その期間を下のビューでユーザーに伝えている。 本研究ではこの研究を参考に、タイムステップ数が10と、データが少ない時系列データに対して傾向の変化があるタイミングを特定し、折れ線の中に可視化し、文章に傾向の変化の情報を取り入れる。</p>
+<hr />
+<hr />
+<hr />
+<hr />
 <p>An Example of the Manuscript for<br />
 the Visualization Symposium Japan (Times New Roman 16pt)</p>
 <p>―Subtitle (Times New Roman 14pt)―</p>
@@ -133,11 +142,6 @@ C_a(\mathbb{x}, \mathbb{{e&#39;}})C_l(\mathbb{x}, \mathbb{{e&#39;}})C_p(\mathbb{
 <h2 id="文献の引用">文献の引用</h2>
 <p>この例題では、<code>library.bib</code> 文献データベースとし、文献引用のスタイルにシカゴスタイルを指定して文献リストと文献の引用をしている。<code>.csl</code>ファイルを別のものに指定すれば、他の引用形式にも対応できる。文献の引用方法は LaTeX の <code>\cite {...}</code> コマンドとは異なる。以下を参考にすること。</p>
 <p><span class="citation" data-cites="kashika-1997-visualization-technique kashika-1999-an-example-of-the-manuscript-for-vsj-journal">(Kashika 1997; Kashika and Hanko 1999)</span> は英語の文献で<span class="citation" data-cites="kashika-1999-a-japanese-example-of-the-manuscript-for-vsj-journal">(可視化 and 情報 1998)</span>は日本語の文献である.</p>
-<h1 id="関連研究">関連研究</h1>
-<h2 id="説明的可視化">説明的可視化</h2>
-<p>Interactive map reports summarizing bivariate geographic data(以下iMR)<span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>では、二つの地理統計変数を理解するために可視化と文章を使ってデータを説明する説明的可視化を行っている。 地図の領域の色やその領域の上にに描かれる円の大きさを使って二つの地理統計変数を可視化するとともに、それらのデータを解析して文章を自動生成している。 図は各州の年間の死亡者数、ハリケーンの発生数に対して実際にiMRのシステムを使用した例である。 生成されている文章には、死亡者数の平均値や最大値・最小値など、統計的なデータをはじめ、「南部の州が他の週より死亡者数やハリケーンの発生数が多い」などデータからは読みとりづらい情報も組み込まれている。 iMRでは文章生成を行うプロセスを自身で定義し、ユーザーの要望に合わせてパラメータを変更することで柔軟な文章を生成している。 本論文ではデータからは読み取りづらい情報を文章にしてユーザーに伝えるために、この論文の文章生成プロセスを参考に文章を生成するプロセスを定める。</p>
-<h2 id="時系列データの可視化">時系列データの可視化</h2>
-<p>時系列データの情報を伝えるために可視化を使った研究はいくつか存在しており<span class="citation" data-cites="bryan2016temporal">(Bryan, Ma, and Woodring 2016)</span>、その中でIllusrating Changes in Time-Series Data With Data<span class="citation" data-cites="lu2020illustrating">(Lu et al. 2020)</span>は、二つの地理統計変数データを二変数マップと動画を用いて可視化している。 図では横軸を収入、縦軸を平均寿命とした例で、ドットの動きによって過去100年で世界各国の収入や平均寿命がどのように変化していったかが分かるようになっている。 この研究では、時系列データを事前に解析し、時系列データの変化の傾向が変化した期間を特定しており、その期間を下のビューでユーザーに伝えている。 本研究でも時系列データを解析し、傾向の変化があるタイミングを特定し折れ線の中に可視化し、文章にも傾向の変化の情報を取り入れる。</p>
 <h1 class="unnumbered" id="参-考-文-献">参　考　文　献</h1>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bryan2016temporal" class="csl-entry" role="doc-biblioentry">
