@@ -6,7 +6,7 @@ MARKDOWN=md/*.md
 INPUTS=$(HEADER) $(MACRO) $(MARKDOWN)
 
 DOCX=vsj21-maki.docx
-HTML=vsj21-mski.html
+HTML=vsj21-maki.html
 
 define pandoc
   pandoc \
