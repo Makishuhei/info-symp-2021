@@ -1,7 +1,7 @@
 ---
-title: |
-    可視化情報シンポジウム原稿テンプレート
-    (和題:ゴシック16pt,1行27文字以内)*
-    ―和文副題:ゴシック14pt
-author: "可視化　太郎○ (可視化情報大学），情報　花子（可視化情報（株））"
+title: 時系列データに対する説明的可視化
+    # (和題:ゴシック16pt,1行27文字以内)*
+    # ―和文副題:ゴシック14pt
+author: "牧 修平○ (東京工業大学）"
+subtitle: Explanatory Visualization for Time Series Data
 ---
