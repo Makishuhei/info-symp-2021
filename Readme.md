@@ -4,6 +4,11 @@ url: http://www.visualization.jp/symp2021/
 ---
 
 ---
+title: 進捗
+url: https://makishuhei.github.io/info-symp-2021/vsj21-maki.html
+---
+
+---
 
 # このテンプレートの使い方
 
