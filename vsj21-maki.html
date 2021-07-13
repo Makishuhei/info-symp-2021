@@ -51,18 +51,17 @@
 <p>to English</p>
 <h1 id="はじめに">はじめに</h1>
 <!-- もっと丁寧に書いたほうがいいでしょう。各段落ごとに主張したいことはひとつに絞り、そのひとつずつの主張について、根拠や文献を示して根拠を説明することが大切です。 -->
-<p>生のデータを見るだけでは分析したり理解したりするのが難しいデータに対して、その分析や理解のために可視化を行う研究はたくさん行われてきている<span class="citation" data-cites="bryan2016temporal Gschwandtner2018KnowYE gortler2019stippling sondag2020uncertainty">(Bryan, Ma, and Woodring 2016; Gschwandtner and Erhart 2018; Görtler et al. 2019; Sondag et al. 2020)</span>。 しかし可視化によるデータの分析や理解に不慣れなユーザや可視化だけでは理解が難しいデータを解析したいユーザに対しては、データの可視化だけでその目的を達成することができない可能性がある<span class="citation" data-cites="ynnerman2018exploranation">(Ynnerman, Löwgren, and Tibell 2018)</span>。 そこで文章と可視化の二つの方法を相互的に使ってデータの説明をする。<strong>説明的可視化</strong>が研究されてる<span class="citation" data-cites="hosokawa2020scalable latif2019interactive">(Hosokawa, Arimoto, and Wakita 2020; Latif and Beck 2019)</span>。</p>
+<p>生のデータを見るだけでは分析したり理解したりするのが難しいデータに対して、その分析や理解のために可視化を行う研究はたくさん行われてきている<span class="citation" data-cites="bryan2016temporal Gschwandtner2018KnowYE gortler2019stippling sondag2020uncertainty">(Bryan, Ma, and Woodring 2016; Gschwandtner and Erhart 2018; Görtler et al. 2019; Sondag et al. 2020)</span>。 しかし可視化によるデータの分析や理解に不慣れなユーザや可視化だけでは理解が難しいデータを解析したいユーザに対しては、データの可視化だけでその目的を達成することができない可能性がある<span class="citation" data-cites="ynnerman2018exploranation">(Ynnerman, Löwgren, and Tibell 2018)</span>。 そこで文章と可視化の二つの方法を相互的に使ってデータの説明をする。<strong>説明的可視化</strong>が研究されてる<span class="citation" data-cites="hosokawa2020scalable latif2019interactive">(Hosokawa, Arimoto, and Wakita 2020; Latif and Beck 2019)</span>。 また説明的可視化は、可視化では表現仕切れない情報を文章として伝えることができる。</p>
 <p>時系列データは日常の気温や降水量、近年では新型コロナ感謝数の推移など様々な場面で扱われているデータである。 時系列データは必ずしも同様の事柄に対して一つのデータだけではなく複数のデータが存在することがあり(新型コロナ感謝数の推移など)、このような時系列データは可視化による理解が困難になる。 しかしそのような場面で、今まで説明的可視化を使った研究は行われてきていない。 そこで本研究では<a href="https://www.socialprogress.org/">Social Progress Imperative</a>が10年にわたって発表しているSocial Progress Indexのデータ<span class="citation" data-cites="SPI">(Social Progress Imperative n.d.)</span>(以下SPIデータ)を例として、説明的可視化による時系列データの理解を手伝う手法を提案する。</p>
 <p>2章では説明的可視化と時系列データの可視化について関連研究をまとめ、3章でシステムの設計について述べる。 4章ではシステムのユースケースを通してシステムの有効性を説明し、5章と6章で考察とまとめを行う。</p>
 <h1 id="関連研究">関連研究</h1>
 <p>この章では、今まで研究されてきた説明的可視化や時系列データに対する可視化をみていく。</p>
-<h2 id="説明的可視化"><strong>説明的可視化</strong></h2>
-<p>Latifたちは<span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>、二つの地理統計変数を理解するためにinteractive Map Reports(以下iMR)というシステムを開発し、説明的可視化を行っている。 地図上の行政区の色や行政区に関する統計量を表すグリフを使って二つの地理統計変数を可視化するとともに、データを解析して文章を自動生成しているのを、いくつかの例を上げながら説明している。 <strong>図</strong>はアメリカ合衆国の各州の年間の死亡者数とハリケーンの発生数に対して実際にiMRのシステムを使用した例である。 生成されている文章には、死亡者数の平均値や最大値・最小値など統計的なデータをはじめ、「南部の州が他の地域の州より死亡者数やハリケーンの発生数が多い傾向がある」など、特定の州のデータの情報だけではなく、データの分布から見つかる地理的な偏りなどの情報も言葉で説明されている。 iMRでは文章生成を行うプロセスを自身で定義し、ユーザーの要望に合わせてパラメータを変更することで柔軟な文章を生成している。 本研究ではデータからは読み取りづらい情報を文章にしてユーザーに伝えるために、この論文の文章生成プロセスを参考に文章を生成するプロセスを定める。</p>
-<p>Hosokawaたちは<span class="citation" data-cites="hosokawa2020scalable">(Hosokawa, Arimoto, and Wakita 2020)</span>、多変数の地理的統計量に対して指標の階層構造や地域的な階層構造に着目して説明的可視化を行っている。 HosokawaたちはSPIデータを使用しているがある年についてのみ注目して、時系列ではない二つの階層構造が含まれるデータとしてSPIデータを扱っている。 本研究では時系列ということに注目してシステムを作る。 またHosokawaたちとはことなり、地理的階層構造についてのみに着目しており、SPIの指標の階層構造についての説明的可視化は行っていない。 <strong>図</strong></p>
-<h2 id="時系列データの可視化"><strong>時系列データの可視化</strong></h2>
-<p>時系列データの情報を伝えるために可視化を使った研究はいくつか存在しており<span class="citation" data-cites="bryan2016temporal">(Bryan, Ma, and Woodring 2016)</span>、その中でJunhuaたち<span class="citation" data-cites="lu2020illustrating">(Lu et al. 2020)</span>は、二つの地理統計変数データを二変数マップと動画を用いて可視化している。 <strong>図</strong>では横軸を収入、縦軸を平均寿命とした例で、ドットの動きによって過去100年で世界各国の収入や平均寿命がどのように変化していったかが分かるようになっている。 この研究では、時系列データを事前に解析し時系列データの変化の傾向が変化した期間を特定して、その期間を下のビューでユーザーに伝えている。 本研究ではこの研究を参考に、タイムステップ数が10と、データが少ない時系列データに対して傾向の変化があるタイミングを特定し、可視化と文章に傾向の変化の情報を取り入れる。</p>
+<p>Latifたち<span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>は、二つの地理統計変数を理解するためにinteractive Map Reports(以下iMR)というシステムを開発し、説明的可視化を行っている。 地図上の行政区の色や行政区に関する統計量を表すグリフを使って二つの地理統計変数を可視化するとともに、データを解析して文章を自動生成しているのを、いくつかの例を上げながら説明している。 <strong>図</strong>はその例の一つであり、アメリカ合衆国の各州の年間の死亡者数とハリケーンの発生数に対して実際にiMRのシステムを使用したものである。 生成されている文章には、「死亡者数の平均値が14.9万人」などの統計的な情報をはじめ、「南部の州が他の地域の州より死亡者数やハリケーンの発生数が多い傾向がある」など、特定の州のデータの情報だけではなく、データの分布から見つかる地理的な偏りなどの情報も言葉で説明されている。 iMRでは文章生成を行うプロセスを自身で定義し、ユーザーの要望に合わせてパラメータを変更することで柔軟な文章を生成している。</p>
+<p>Latifたちが開発したiMRは二変数のみの地理統計量データに対応していたが、Hosokawaたち<span class="citation" data-cites="hosokawa2020scalable">(Hosokawa, Arimoto, and Wakita 2020)</span>はある年のSPIデータにを使い、多変数の地理的統計量のデータに対して説明的可視化を行うSPI viewerを開発した。 hosokawaたちは多変数の地理統計量の情報を提供するために指標の階層性を利用し、国々のある指標についてとその子孫の指標についての文章を生成している。 また、棒グラフを用いて一つの指標に対するデータの分布を表現したり、散布図を用いて二つの指標に対するデータの分布を比較したりしている。 <strong>図</strong></p>
+<p>時系列データの情報を伝えるために可視化を使った研究は複数存在する<span class="citation" data-cites="andrienko2020visual bryan2016temporal van1999cluster">(Andrienko et al. 2020; Bryan, Ma, and Woodring 2016; Van Wijk and Van Selow 1999)</span>。そのなかでRoslingたち<span class="citation" data-cites="rosling2011health">(Rosling and Zhang 2011)</span>は、二つの地理統計変数データを可視化するために、バブルチャートとアニメーションを用いたGapminderというシステムを開発した。 時間に沿って動くバブルの位置から、世界各国の二つの統計量の変化を図示している。 さらにLuたち<span class="citation" data-cites="lu2020illustrating">(Lu et al. 2020)</span>は、Gapminderのアニメーションの中で注目すべきタイミングを抽出する研究を行った。 時系列データの変化の傾向が変化した期間をデータ解析から特定して、時間を表すバーの中にその期間を表示している。</p>
+<p>Hosokawaたちは指標の階層構造と指標の階層構造の二つに注目してして説明的可視化を行っている。 本研究ではまず地理的階層構造にだけに注目した時系列データに対する説明的可視化を行い、指標の階層構造に注目するのは今後の課題とする。 文章生成に関して、Latifたちと同様に文章を生成するプロセスを定め、文章を生成する。 その中で時系列データの傾向の変化についての情報を取り入れる。 そのために、タイムステップ数が10とデータが少ない時系列データに対して傾向の変化があるタイミングを特定する方法を定める。</p>
 <h1 id="システムの設計">システムの設計</h1>
-<p>時系列データの分析のための可視化を表示しつつ、情報を手に入れたい地理的範囲や指標の選択に応じた情報を文章としてユーザに提供するためにシステムを設計した。 この章ではそのシステムの要件や、実際にどのように設計したのかを説明していく。 SPIデータを分析するときに、ユーザーは地理的な階層(東アジアの中の日本やヨーロッパの中のイギリスなど)の情報を含んでデータを分析したいと仮定している。 しかしSPIデータには地理的な階層の情報が含まれていないので、<a href="https://www.un.org/">国際連合</a>が提供している、地理的な階層についてのデータ<span class="citation" data-cites="unsd2003united">(UNSD 2003)</span>を追加で扱う。</p>
+<p>時系列データの分析のための可視化を表示しつつ、情報を手に入れたい地理的範囲や指標の選択に応じた情報を文章としてユーザに提供するためにシステムを設計した。 この章ではそのシステムの要件や、実際にどのように設計したのかを説明していく。 SPIデータを分析するときに、ユーザーは地理的な階層(東アジアの中の日本や西ヨーロッパの中のフランスなど)の情報を含んでデータを分析したいと仮定している。 しかしSPIデータには地理的な階層の情報が含まれていないので、<a href="https://www.un.org/">国連</a>が提供している、地理的な階層についてのデータ<span class="citation" data-cites="unsd2003united">(UNSD 2003)</span>を追加で扱う。</p>
 <!--                      要件                             -->
 <h2 id="要件">要件</h2>
 <p>実際にシステムを作る前に、以下のように要件を定めた。</p>
@@ -276,6 +275,9 @@ C^{\text {High}}(\E x, \E {x'}) & = \\
 [@kashika-1997-visualization-technique; @kashika-1999-an-example-of-the-manuscript-for-vsj-journal] は英語の文献で[@kashika-1999-a-japanese-example-of-the-manuscript-for-vsj-journal]は日本語の文献である. -->
 <h1 class="unnumbered" id="参-考-文-献">参　考　文　献</h1>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-andrienko2020visual" class="csl-entry" role="doc-biblioentry">
+Andrienko, Natalia, Gennady Andrienko, Georg Fuchs, Aidan Slingsby, Cagatay Turkay, and Stefan Wrobel. 2020. <span>“Visual Analytics for Data Scientists.”</span> In. Springer International Publishing.
+</div>
 <div id="ref-bryan2016temporal" class="csl-entry" role="doc-biblioentry">
 Bryan, Chris, Kwan-Liu Ma, and Jonathan Woodring. 2016. <span>“Temporal Summary Images: An Approach to Narrative Visualization via Interactive Annotation Generation and Placement.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 23 (1): 511–20.
 </div>
@@ -294,6 +296,9 @@ Latif, Shahid, and Fabian Beck. 2019. <span>“Interactive Map Reports Summarizi
 <div id="ref-lu2020illustrating" class="csl-entry" role="doc-biblioentry">
 Lu, Junhua, Jie Wang, Hui Ye, Yuhui Gu, Zhiyu Ding, Mingliang Xu, and Wei Chen. 2020. <span>“Illustrating Changes in Time-Series Data with Data Video.”</span> <em>IEEE Computer Graphics and Applications</em> 40 (2): 18–31.
 </div>
+<div id="ref-rosling2011health" class="csl-entry" role="doc-biblioentry">
+Rosling, Hans, and Zhongxing Zhang. 2011. <span>“Health Advocacy with Gapminder Animated Statistics.”</span> <em>Journal of Epidemiology and Global Health</em> 1 (1): 11.
+</div>
 <div id="ref-seo2005rank" class="csl-entry" role="doc-biblioentry">
 Seo, Jinwook, and Ben Shneiderman. 2005. <span>“A Rank-by-Feature Framework for Interactive Exploration of Multidimensional Data.”</span> <em>Information Visualization</em> 4 (2): 96–113.
 </div>
@@ -308,6 +313,9 @@ Truong, Charles, Laurent Oudre, and Nicolas Vayatis. 2020. <span>“Selective Re
 </div>
 <div id="ref-unsd2003united" class="csl-entry" role="doc-biblioentry">
 UNSD, UNdata. 2003. <span>“United Nations Statistics Division.”</span>
+</div>
+<div id="ref-van1999cluster" class="csl-entry" role="doc-biblioentry">
+Van Wijk, Jarke J, and Edward R Van Selow. 1999. <span>“Cluster and Calendar Based Visualization of Time Series Data.”</span> In <em>Proceedings 1999 IEEE Symposium on Information Visualization (InfoVis’ 99)</em>, 4–9. IEEE.
 </div>
 <div id="ref-ynnerman2018exploranation" class="csl-entry" role="doc-biblioentry">
 Ynnerman, A., J. Löwgren, and L. Tibell. 2018. <span>“Exploranation: A New Science Communication Paradigm.”</span> <em>IEEE Computer Graphics and Applications</em> 38 (3): 13–20.
