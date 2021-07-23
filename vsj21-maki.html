@@ -46,21 +46,35 @@
 <p class="author">牧 修平○ (東京工業大学）</p>
 </header>
 <h5 class="af1" id="abstract">ABSTRACT</h5>
-<p>This template is a guide to prepare manuscript for Visualization Symposium Japan. Here, please write the abstract serving as an index and as a summary of the present paper. It should be as long as approximately 150 words.</p>
-<p>データを理解しやすくするために様々な可視化手法が使われているが、データ構造の複雑さやデータの多さなどの要因のせいで、意図する情報を全てユーザが可視化から認識することは難しい。そこで可視化に加えてデータから文章を生成し、データに含まれる有益である可能性のある情報を、前もってユーザに提供するような研究が行われている。本論文のシステムでは、多次元の時系列データに関してデータの分布や変動の分析をサポートする可視化とともに、そのデータからテンプレートベースで生成した要約文を提供する。論文中では、時系列データの類似度の計算方法や時系列データを可視化した折れ線の形からデータを探索する方法、要約を生成するテンプレートの構成について説明する。そして最後にシステム全体をSocial Progress Indexというデータを用いたユースケースを通して説明する。</p>
-<p>to English</p>
+<!-- データを理解しやすくするために様々な可視化手法が使われているが、スケーラビリティやデータの構造の関係で、伝えたいデータの特徴を可視化から認識することが難しい可能性がある。
+そこで可視化に加えて、データの特徴を言葉によって提供する研究が行われている。
+本論文では、Social Progress Indexというアイテム数の多い時系列データを例に、データの分析をサポートする可視化と、テンプレートベースで生成したデータの要約文を提供するシステムを提案する。
+また本論文では、時系列データの形からデータを探索する方法、データの要約文を生成するテンプレートの構成について説明する。
+最後にケーススタディを通してシステムの用性を示す。 -->
+<p>Various visualization methods are used to make data easier to understand, but due to scalability and data structure, it may be difficult to recognize the features of the data we want to convey from the visualization. Therefore, in addition to visualization, research has been done to provide the features of data by words. In this paper, using the Social Progress Index, a time-series data with a large number of items as an example, we propose a system that provides visualizations to support data analysis and template-based summary sentences of the data. In this paper, we also explain how to search for data in the form of time series data and how to construct templates to generate summary text of the data. Finally, we show the usability of the system through a case study.</p>
+<p>Keyword: Time Series Data, Explanatory Visualization</p>
 <h1 id="はじめに">はじめに</h1>
 <!-- もっと丁寧に書いたほうがいいでしょう。各段落ごとに主張したいことはひとつに絞り、そのひとつずつの主張について、根拠や文献を示して根拠を説明することが大切です。 -->
-<p>生のデータを見るだけでは分析したり理解したりするのが難しいデータに対して、その分析や理解のために可視化を行う研究はたくさん行われてきている<span class="citation" data-cites="bryan2016temporal Gschwandtner2018KnowYE gortler2019stippling sondag2020uncertainty">(Bryan, Ma, and Woodring 2016; Gschwandtner and Erhart 2018; Görtler et al. 2019; Sondag et al. 2020)</span>。 しかし可視化によるデータの分析や理解に不慣れなユーザや可視化だけでは理解が難しいデータを解析したいユーザに対しては、データの可視化だけでその目的を達成することができない可能性がある<span class="citation" data-cites="ynnerman2018exploranation">(Ynnerman, Löwgren, and Tibell 2018)</span>。 そこで文章と可視化の二つの方法を相互的に使ってデータの説明をする、<strong>説明的可視化</strong>が研究されてる<span class="citation" data-cites="hosokawa2020scalable latif2019interactive">(Hosokawa, Arimoto, and Wakita 2020; Latif and Beck 2019)</span>。 また説明的可視化は、可視化では表現仕切れない情報を文章として伝えることができ、可視化に精通するユーザーに対してもより深い情報を提供することができる。</p>
-<p>時系列データは日常の気温や降水量、近年では新型コロナ感謝数の推移など様々な場面で扱われているデータである。 時系列データは必ずしも同様の事柄に対して一つのデータだけではなく複数のデータが存在することがあり(世界各国の新型コロナ感謝数の推移など)、このようにアイテム数の多い時系列データは可視化による理解が困難になる。 そのような時に、説明的可視化を使うことで可視化だけではなく、文章によってデータの情報を伝えることができる。 そこで本研究では<a href="https://www.socialprogress.org/">Social Progress Imperative</a>が10年にわたって発表しているSocial Progress Indexのデータ<span class="citation" data-cites="SPI">(Social Progress Imperative n.d.)</span>(以下SPIデータ)を例として、説明的可視化による時系列データの理解と探索を行う手法を提案する。</p>
+<p>生のデータを見るだけでは分析したり理解したりするのが難しいデータに対して、その分析や理解のために可視化を行う研究はたくさん行われてきている<span class="citation" data-cites="bryan2016temporal Gschwandtner2018KnowYE gortler2019stippling sondag2020uncertainty">(Bryan, Ma, and Woodring 2016; Gschwandtner and Erhart 2018; Görtler et al. 2019; Sondag et al. 2020)</span>。 しかし可視化によるデータの分析や理解に不慣れなユーザや可視化だけでは理解が難しいデータを解析したいユーザに対しては、データの可視化だけでその目的を達成することができない可能性がある<span class="citation" data-cites="ynnerman2018exploranation">(Ynnerman, Löwgren, and Tibell 2018)</span>。 そこで文章と可視化の二つの方法を相互的に使ってデータの説明をする、<strong>説明的可視化</strong>が研究されてる<span class="citation" data-cites="hosokawa2020scalable latif2019interactive">(Hosokawa, Arimoto, and Wakita 2020; Latif and Beck 2019)</span>。 データの特徴を可視化に加えて文章によっても提供するため、可視化に精通するユーザーに対してもより深い理解を促すことができる。</p>
+<p>時系列データは日常の気温や降水量、近年では新型コロナ感謝数の推移など様々な場面で扱われているデータである。 時系列データは必ずしも同様の事柄に対して一つのデータだけではなく複数のデータが存在することがあり(世界各国の新型コロナ感謝数の推移など)、このようにアイテム数の多い時系列データは可視化による理解が困難になる。 そのような時に、説明的可視化を使うことで可視化だけではなく、文章によってデータの情報を伝えることができる。 そこで本研究では<a href="https://www.socialprogress.org/">Social Progress Imperative</a>が10年にわたって発表しているSocial Progress Indexのデータ<span class="citation" data-cites="SPI">(Social Progress Imperative n.d.)</span>を例として、説明的可視化による時系列データの理解と探索を行う手法を提案する。 以下Social Progress IndexのデータのことをSPIデータと記述することにする。</p>
 <p>2章では説明的可視化と時系列データの可視化について関連研究をまとめ、3章でシステムの設計について述べる。 4章ではシステムのユースケースを通してシステムの有効性を説明し、5章と6章で考察とまとめを行う。</p>
 <h1 id="関連研究">関連研究</h1>
-<p>この章では、今まで研究されてきた説明的可視化や時系列データに対する可視化をみていく。</p>
-<p>Latifたち<span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>は、二つの地理統計変数を理解するためにinteractive Map Reports(以下iMR)というシステムを開発し、説明的可視化を行っている。 地図上の行政区の色や行政区に関する統計量を表すグリフを使って二つの地理統計変数を可視化するとともに、データを解析して文章を自動生成しているのを、いくつかの例を上げながら説明している。 <strong>図</strong>はその例の一つであり、アメリカ合衆国の各州の年間の死亡者数とハリケーンの発生数に対して実際にiMRのシステムを使用したものである。 生成されている文章には、「死亡者数の平均値が14.9万人」などの統計的な情報をはじめ、「南部の州が他の地域の州より死亡者数やハリケーンの発生数が多い傾向がある」など、特定の州のデータの情報だけではなく、データの分布から見つかる地理的な偏りなどの情報も言葉で説明されている。 iMRでは文章生成を行うプロセスを自身で定義し、ユーザーの要望に合わせてパラメータを変更することで柔軟な文章を生成している。</p>
-<p>Latifたちが開発したiMRは二変数のみの地理統計量データに対応していたが、Hosokawaたち<span class="citation" data-cites="hosokawa2020scalable">(Hosokawa, Arimoto, and Wakita 2020)</span>はある年のSPIデータにを使い、多変数の地理的統計量のデータに対して説明的可視化を行うSPI viewerを開発した。 hosokawaたちは多変数の地理統計量の情報を提供するために指標の階層性を利用し、国々のある指標についてとその子孫の指標についての文章を生成している。 また、棒グラフを用いて一つの指標に対するデータの分布を表現したり、散布図を用いて二つの指標に対するデータの分布を比較したりしている。 <strong>図</strong></p>
-<p>時系列データの情報を伝えるために可視化を使った研究は複数存在する<span class="citation" data-cites="andrienko2020visual bryan2016temporal van1999cluster">(Andrienko et al. 2020; Bryan, Ma, and Woodring 2016; Van Wijk and Van Selow 1999)</span>。そのなかでRoslingたち<span class="citation" data-cites="rosling2011health">(Rosling and Zhang 2011)</span>は、アイテム数の多い二つの地理統計変数データを可視化するために、バブルチャートとアニメーションを用いたGapminderというシステムを開発した。 時間に沿って動くバブルの位置から、世界各国の二つの統計量の変化を図示している。 さらにLuたち<span class="citation" data-cites="lu2020illustrating">(Lu et al. 2020)</span>は、Gapminderのアニメーションの中で注目すべきタイミングを抽出する研究を行った。 時系列データの変化の傾向が変化した期間をデータ解析から特定して、時間を表すバーの中にその期間を表示している。</p>
-<p>Hosokawaたちは指標の階層構造と指標の階層構造の二つに注目してして説明的可視化を行っている。 本研究ではまず地理的階層構造にだけに注目した時系列データに対する説明的可視化を行い、指標の階層構造に注目するのは今後の課題とする。 文章生成に関して、Latifたちと同様に文章を生成するプロセスを定め、文章を生成する。 その中で時系列データの傾向の変化についての情報を取り入れる。 そのために、タイムステップ数が10とデータが少ない時系列データに対して傾向の変化があるタイミングを特定する方法を定める。</p>
+<p>この章では、今まで研究されてきた説明的可視化や時系列データに対する可視化をみていく。 <!-- Fig 1,2,3 --></p>
+<figure>
+<img src="img/1_iMR.png" alt="Figure 1: An example of applying the interactive Map Reports system to data on the number of deaths and storms per year by state in the United States." /><figcaption aria-hidden="true">Figure 1: An example of applying the interactive Map Reports system to data on the number of deaths and storms per year by state in the United States.</figcaption>
+</figure>
+<p>Latifら<span class="citation" data-cites="latif2019interactive">(Latif and Beck 2019)</span>は、二変量の地理統計データを理解するためにinteractive Map Reports(以下iMR)システムを開発し、説明的可視化を行っている。 地図上の行政区の色や行政区に関する統計量を表すグリフを使って二つの地理統計変数を可視化するとともに、データを解析して文章を自動生成しているのを、いくつかの例を上げながら説明している。 図1はその例の一つであり、アメリカ合衆国の各州の年間の死亡者数とハリケーンの発生数に対してiMRのシステムを使用したものである。 生成された文章には、「The average number of deaths per state was 14.9, … (死亡者数の平均値が14.9万人だった。…)」などの統計的な情報をはじめ、「Southern states faced higher number of deaths and storms compared to the other states..(南部の州は、他の州と比べて死亡者数やハリケーンの発生数が多い。)」など、特定の州のデータの情報だけではなく、データの分布から見つかる地理的な偏りなどの情報も言葉で説明されている。 iMRでは文章生成を行うプロセスを自身で定義し、ユーザーの要望に合わせてパラメータを変更することで柔軟な文章を生成している。</p>
+<figure>
+<img src="img/2_SPI_viewer.png" alt="Figure 2:SPI viewer" /><figcaption aria-hidden="true">Figure 2:SPI viewer</figcaption>
+</figure>
+<p>Latifたちが開発したiMRは二変数のみの地理統計量データに対応していたが、Hosokawaたち<span class="citation" data-cites="hosokawa2020scalable">(Hosokawa, Arimoto, and Wakita 2020)</span>はある年のSPIデータにを使い、多変数の地理的統計量のデータに対して説明的可視化を行うSPI viewerを開発した(図2)。 hosokawaたちは多変数の地理統計量の情報を提供するために指標の階層性を利用し、国々のある指標についてとその子孫の指標についての文章を生成している。 また、棒グラフを用いて一つの指標に対するデータの分布を表現したり、散布図を用いて二つの指標に対するデータの分布を比較したりしている。</p>
+<figure>
+<img src="img/3_Gapminder.png" alt="Figure 3: An example of applying Gapminder to trivariate geo-statistical data. The size of the bubble indicates the number of people infected with HIV." /><figcaption aria-hidden="true">Figure 3: An example of applying Gapminder to trivariate geo-statistical data. The size of the bubble indicates the number of people infected with HIV.</figcaption>
+</figure>
+<p>時系列データの情報を伝えるために可視化を使った研究は複数存在する<span class="citation" data-cites="andrienko2020visual bryan2016temporal van1999cluster">(Andrienko et al. 2020; Bryan, Ma, and Woodring 2016; Van Wijk and Van Selow 1999)</span>。そのなかでRoslingたち<span class="citation" data-cites="rosling2011health">(Rosling and Zhang 2011)</span>は、アイテム数の多い二つの地理統計変数データを可視化するために、バブルチャートとアニメーションを用いたGapminderというシステムを開発した(図3)。 時間に沿って動くバブルの位置から、世界各国の二つの統計量の変化を図示している。 さらにLuたち<span class="citation" data-cites="lu2020illustrating">(Lu et al. 2020)</span>は、Gapminderのアニメーションの中で注目すべきタイミングを抽出する研究を行った。 時系列データの変化の傾向が変化した期間をデータ解析から特定して、時間を表すバーの中にその期間を表示している。</p>
+<p>Hosokawaたちは指標の階層構造と指標の階層構造の二つに注目してして説明的可視化を行っている。 本研究ではまず地理的階層構造にだけに注目した時系列データに対する説明的可視化を行う。 指標の階層構造に対応するのは今後の課題とする。 文章生成に関して、Latifたちと同様に文章を生成するプロセスを定め、文章を生成する。 その中で時系列データの傾向の変化についての情報を取り入れる。 そのために、タイムステップ数が10とデータが少ない時系列データに対して傾向の変化があるタイミングを特定する方法を定める。</p>
 <h1 id="システムの設計">システムの設計</h1>
+<!-- Fig 1 -->
 <p>時系列データの分析のための可視化を表示しつつ、情報を手に入れたい地理的範囲や指標の選択に応じた情報を文章としてユーザに提供するためにシステムを設計する。 この章では課題からシステムの要件を定め、どのようにシステムを設計したのかを説明する。</p>
 <!-- 課題かけ -->
 <!-- ## データ分析の問題
@@ -71,6 +85,10 @@
 一つの国についてのデータを分析したいというニーズは存在することは当然だが、さらにアジアやヨーロッパなどといった地理的範囲でデータを分析することにも興味がある。
 しかし、SPIデータにはそのような地理的範囲ごとのデータの集約が存在しないため、ユーザーが自身で計算する必要がある。 -->
 <!-- 要件 -->
+<!-- Fig 4 -->
+<figure>
+<img src="img/4_SPI_Time_Series.png" alt="Figure 4: This figure shows the application of the system to the Social Progress Index dataset. In (a), the user can select the country, geographical area, and SPI index user wants to focus on. In (b) and (c), time series data visualization and automatically generated sentences are displayed according to the selection made in (a). In (d) is a world map to show the location of the country and geographical area of interest. (e) shows the definition of the SPI index to be selected in (a)." /><figcaption aria-hidden="true">Figure 4: This figure shows the application of the system to the Social Progress Index dataset. In (a), the user can select the country, geographical area, and SPI index user wants to focus on. In (b) and (c), time series data visualization and automatically generated sentences are displayed according to the selection made in (a). In (d) is a world map to show the location of the country and geographical area of interest. (e) shows the definition of the SPI index to be selected in (a).</figcaption>
+</figure>
 <h2 id="要件">要件</h2>
 <!-- 以上の問題をもとに以下のように要件を定めた。 -->
 <p>実際にシステムを作る前に、以下のように要件を定めた。</p>
@@ -82,19 +100,20 @@
 </ul>
 <!-- **R5 時系列データ** 興味のある時系列データを分析することや、興味のある変化をしているデータを発見することを容易にする。 -->
 <!--                        可視化について                -->
-<h2 id="データの可視化">データの可視化</h2>
+<h2 id="設計">設計</h2>
+<p>可視化と文章を通して、SPIデータの詳細な情報や概要を提供する。 着目したいアイテムとして、国、アジアやヨーロッパなどといった地理的範囲を考える。 注目したい国については、そのデータの傾向やその傾向の変化を解析してその情報を提供する。</p>
+<p><strong>傾向の変化する点</strong> 時系列データの傾向の変化がある時、その変化があった点を特定してデータの概要としてユーザーに提供する。 まず何かしらの変化があるのか、それとも特に傾向が変化するわけではなく単調な傾向があるのかを判定する。 まず時系列データ似たいして線形回帰を行い、一次の直線を求める。 その直線と元のデータに対して、全ての年でデータの差が閾値より小さい場合には傾向は変化していない判断する。 一方、どこかの年でデータの差が閾値以上であれば傾向の変化がある可能性があるみなす。 次にJunhuaたちと同様にWin法<span class="citation" data-cites="truong2020selective">(Truong, Oudre, and Vayatis 2020)</span>を活用して、データの傾向が変化する点を探す。 時系列データを<span class="math inline">\((x_1,x_2,...,x_n)\)</span>として、<span class="math inline">\((x_{i},x_{i+1})\)</span>の線形回帰直線の傾き<span class="math inline">\(m^{(1)}_i\)</span> <span class="math inline">\((1\leq i\leq n-1)\)</span>と、<span class="math inline">\((x_{i},x_{i+1},x_{i+2})\)</span>の線形回帰直線の傾き<span class="math inline">\(m^{(2)}_i\)</span> <span class="math inline">\((1\leq i\leq n-2)\)</span>を求める。 次に<span class="math inline">\(d^{(j)}_i=|m^{(j)}_{i+1}-m^{(j)}_{i}|\)</span> <span class="math inline">\((j=1,2\ \ 1\leq i\leq n-1-j)\)</span>を求める。 <span class="math inline">\(j=1,2\)</span>両方に対して、<span class="math inline">\(d^{(j)}_i\)</span>がある閾値以上であるとき、<span class="math inline">\(x_{i+1}\)</span>の点を時系列データの傾向が変化した点として判断する。 この計算は、直近の左右のデータの傾きの差が大きい点を、データの傾向の変化があった点としている。 <span class="math inline">\(d^{(1)}_i\)</span>は短い時間間隔でのデータの変化を捉えることができ、<span class="math inline">\(d^{(2)}_i\)</span>は少し長い時間間隔でのデータの変化を捉えることができる。</p>
+<p>注目する国についての情報に加えて、ユーザーを次なる探索へと誘導するために、注目する国とデータの変化が類似している国をユーザーに提供する。</p>
+<p><strong>類似している国</strong> 注目する国に対して、データの変化が類似している国を求める。 まず、注目する国と他の国の時系列データで、相関係数が大きい国々の集合<span class="math inline">\(C\)</span>を集める。 その集合<span class="math inline">\(C\)</span>の中の国のデータ<span class="math inline">\(c_i\)</span>と注目する国のデータでユークリッド距離<span class="math inline">\(d_i\)</span>を計算する。 その距離<span class="math inline">\(d_i\)</span>が、ある閾値未満であれば、国<span class="math inline">\(c_i\)</span>を類似している国とする。 二つの時系列データの上昇や減少などの大まかな変化が一致していることを相関係数によって絞り、注目する国と値が近く似た変動をする国を抽出するするために、時系列データのユークリッド距離を用いてる。</p>
+<p>以上の情報を実際の可視化や文章生成に織り交ぜる。</p>
 <h3 id="時系列の可視化">時系列の可視化</h3>
-<p>時系列データの可視化は折れ線やヒートマップを使って行うのが一般的である。 本論文では折れ線を用いてSPIデータの時間的変化を表現する。 しかし注目する地域的範囲が広いときに、ほとんどの折れ線では時間的な変動を認識することができない。 注目する国の概要やその国データと類似した国データをハイライトする。 注目する国に関してはデータの傾向が変化する点をドットを用いて表現しつつ(<strong>R1,R4</strong>)、色を他の表現と異なるマゼンタ色を使う。 注目する国と類似する国のデータに関してダークカーキ色を使う。</p>
-<p><strong>傾向の変化する点</strong> 時系列データの傾向の変化が会った時、その変化があった点を特定してデータの概要としてユーザーに提供したい。</p>
-<p>まず何かしらの変化があるのか、それとも単調な動きをしているのかを判定する。 時系列データを線形回帰し一次の直線を求める。 その直線と元のデータに対し全ての年でデータの差が閾値より小さい場合には、傾向は変化していないとして判定する。 一方どこかの年でデータの差が閾値以上であれば傾向の変化があったろ判定する。</p>
-<p>データの傾向が変化する点の求める方法は、Junhuaたちと同様にWin法<span class="citation" data-cites="truong2020selective">(Truong, Oudre, and Vayatis 2020)</span>を適用する。 時系列データを<span class="math inline">\((x_1,x_2,...,x_n)\)</span>として初めに、<span class="math inline">\(1\leq i\leq n-1\)</span>に対して<span class="math inline">\((x_{i},x_{i+1})\)</span>の線形回帰直線の傾き<span class="math inline">\(m^{(1)}_i\)</span>を求め、<span class="math inline">\(1\leq i\leq n-2\)</span>に対して<span class="math inline">\((x_{i},x_{i+1},x_{i+2})\)</span>の線形回帰直線の傾き<span class="math inline">\(m^{(2)}_i\)</span>を求める。 次に<span class="math inline">\(j=1,2\)</span>、<span class="math inline">\(1\leq i\leq n-1-j\)</span>に対して<span class="math inline">\(d^{(j)}_i=|m^{(j)}_{i+1}-m^{(j)}_{i}|\)</span>を求める。 そして<span class="math inline">\(j=1,2\)</span>両方ともに対して、<span class="math inline">\(d^{(j)}_i\)</span>が注目する指標に対するSPIデータの平均値を元にした閾値以上であるとき、<span class="math inline">\(x_{i+1}\)</span>の点をデータの傾向が変化した点として捉える。 これは、ある点をを中心にして左右の直近のデータの傾きの差が大きい点を傾向の変化があった点としている。 <span class="math inline">\(d^{(1)}_i\)</span>は短い時間間隔でのデータの変化を捉えることができ、<span class="math inline">\(d^{(2)}_i\)</span>は少し長い時間間隔でのデータの変化を捉えることができる。</p>
+<p>時系列データの詳細な情報をユーザーに伝えるために、折れ線を利用したシステムを作る(図4b)。 しかしアイテム数の多い場合では、多くのデータが重なって表示されるためにこの恩恵を受けることができない。 アイテム数の多い折れ線からでも詳細な情報を提供できるように、特定のデータに対する折れ線をハイライトしたり、表示するデータを絞ったりする。 注目したい国と類似している国に対するデータをハイライトする。 またデータの概要を提供するために、注目する国のデータの傾向が変化する点をドットを用いて表現しつつ(<strong>R1,R4</strong>)、色を他の表現と異なるマゼンタ色を使う。 類似している国のデータに関してダークカーキ色を使う。</p>
 <p>傾向が変化する点を抽出した後、折れ線にその情報を表現する。 できるだけ簡単な表現にするため、ドットを用いる。 傾向の変化がその指標の中でいい変化であれば白を、悪い変化であれば黒をドットの色に使って表現する。 複数傾向の変化があった点が存在する場合、その変化の大きさをドットの大きさを使って表現する。</p>
-<p><strong>類似する国</strong> 類似する国を定義する。 初めに注目する国と他の国の時系列データで相関係数が大きい国を集める。 その集合の中で、注目する国と他の国データでユークリッド距離を計算する。 その距離が注目する指標に対するSPIデータの平均値を元にした閾値未満であれば、類似する国とする。 相関係数は、二つの時系列データの上昇や現象などの大まかな変動が一致していることを条件にするために使用している。 その後時系列データを<span class="math inline">\(n\)</span>次元ベクトルと考え、ユークリッド距離が近いデータを選択することで、注目する国と値が近く似た変動をする国を抽出することができる。</p>
 <h3 id="地域の可視化">地域の可視化</h3>
-<p>選択された地域的範囲をユーザーが難なく理解できるように、世界地図を用いてその範囲を表示する(<strong>R3</strong>)。 選択された地理的範囲に含まれていない国々と、データが存在しない国は灰色で表される。 注目する国については、折れ線と同様の色で表現する。 これらによって、ユーザーが注目する国と地理的範囲の国々とで地理的比較が可能になっている。</p>
+<p>選択された地域的範囲をユーザーが難なく理解できるように、世界地図を用いてその範囲を表示する(図4d)。 選択された地理的範囲に含まれていない国々と、データが存在しない国は灰色で表される。 注目する国については、折れ線と同様の色で表現する。 これらによって、ユーザーが注目する国と地理的範囲の国々とで地理的比較が可能になっている。(<strong>R3</strong>)</p>
 <!--                 文章生成について                       -->
-<h2 id="文章生成">文章生成</h2>
-<p>データの可視化だけでは伝えきれない情報や、可視化で示したい情報を含んだデータの概要を文章で伝える(<strong>R4</strong>)。 文章はLatifたちやHosokawaたちと同様に、テンプレートベースで生成する。 <!-- 文章は大きく分けて三つの情報を含んでおり、地理的範囲について、注目する国について、注目する国と類似する国についての情報がある。 --> 以下では以下の情報をデータから抽出して文章にしていく。</p>
+<h3 id="文章生成">文章生成</h3>
+<p>データの可視化だけでは伝えきれない情報や、可視化で示したい情報を含んだデータの概要を文章で伝える(図4c)。 文章はLatifたちやHosokawaたちと同様に、テンプレートベースで生成する。(<strong>R4</strong>) <!-- 文章は大きく分けて三つの情報を含んでおり、地理的範囲について、注目する国について、注目する国と類似する国についての情報がある。 --> 以下では以下の情報をデータから抽出して文章にしていく。</p>
 <ul>
 <li>選択した地理的範囲に含まれる国々が、世界からみて指標の値が低いか高いか。 例: アメリカには世界の国々の中で社会進歩指標が低い国から高い国まで幅広く存在する。</li>
 <li>選択した地理的範囲の国々で、指標の値が高い、もしくは低い国が下の階層の地理的範囲で偏りがあるか(<strong>R2</strong>)。 例: アメリカの中では北アメリカに社会進歩指標が高い国が多い。</li>
@@ -104,18 +123,33 @@
 </ul>
 <p>指標、注目する国、地理的範囲から以上のよう無観点でデータを分析して文章を生成した。</p>
 <!--                 インタラクションについて                             -->
-<h2 id="インタラクション">インタラクション</h2>
+<h3 id="インタラクション">インタラクション</h3>
 <p>ユーザーがより可視化からデータに関する情報を手に入れやすいようにインタラクションを導入する。</p>
 <p><strong>ズーム/フィルタリング</strong> 折れ線の表示において、注目したい国や地理的範囲のデータの変動をより詳細に観察したいときのために、ボタンによって縦軸の範囲を調整できるようにしている。選択した地理的範囲がアジアや南アメリカなど世界全体ではないときは、その選択した地理的範囲のデータだけを表す縦軸にするか世界のデータの範囲を縦軸にするかを調整することができる。 選択した国のデータだけに興味があるときは、縦軸をデータの最小値~最大値に調整することができる。 選択した地理的範囲を見ることは、世界から比べて極端に値が小さい、または大きい国しかその地理的範囲に存在しないときに、その国々のデータを確認するのに役立つ。 一方世界のデータの範囲を縦軸にすることで、世界から比べて極端に値の低い、または高い国がその選択した地理的範囲に含まれていることなどを知ることができる。</p>
 <p>表示範囲の調整を行うズームだけでなく、表示する折れ線をフィルタリングするインタラクションを追加している。 注目する国、注目する国と類似している国、その他の国のデータそれぞれで、表示するか非表示にするか選ぶことができるようにてしている。 類似している国が多いときにそれらを非表示にすることにより、注目する国と類似していない国を目立たせることができる。 一方、類似している国に注目したいときには、類似していない国を非表示にすることができる。</p>
 <p><strong>クエリ</strong> 時系列データを見るとき、何かしら特徴的な動きから探索したいかもしれない。 その時のために、ユーザーのフリーハンドや用意した折れ線の形を入力としてデータを探索できるようにした。 このクエリでは時系列データの形に着目する。 入力されたデータの平均値が各国のデータの平均値と一緒になるように、データを平行移動させる。 その後は類似した国を見つける時と同様に、相関係数とユークリッド距離が閾値以内であればその国を出力に入れる。 このようにしてフリーハンドや用意した折れ線の形から、似た形をしたデータを探索することができる。</p>
 <p><strong>関連付け</strong> 折れ線、地理表現、文章と三つの方法でデータの情報を提供しているが、同じデータに関するものは同じ色で表現すことでデータの理解を促進できる。 例えば注目する国がどのようなデータを持っているかということと、地理的にどのような場所にある国かということをわかりやすくするために、折れ線と地理表現ではともにマゼンタを使って表現している。 また文章の中でこの国のことを述べるときにも、国名の色にマゼンタ使用している。 類似する国についても同様にダークカーキ色が使用されている。</p>
 <p><strong>キー選択</strong> ユーザーが欲しい情報を得ることができるように、データを抽出するいくつかのキーを選択できるようにした。 注目する国、地理的範囲、SPIの指標をボタンを使用して簡単に選択できるようにした。 注目する国については、地理的な位置や折れ線から選択できるようにしている。 これによってある国から地理的に近い国や、データが近い国などといった視点でデータを探索できるようになっている。</p>
-<p><strong>図</strong></p>
 <h1 id="ケーススタディ">ケーススタディ</h1>
+<!-- Fig 5,4,6,7,8,9 -->
 <p>この章では提案するシステムを使って四つの要件、<strong>R1: 変化の特定, R2: 階層的な情報, R3: 地理的範囲の表示, R4: 概要</strong>が満たされているかを確認していく。</p>
-<p><strong>図</strong>は地理的範囲を<strong>南北アメリカ</strong>、指標を<strong>個人の権利</strong>、注目する国を<strong>アメリカ合衆国</strong>にしている。 折れ線からはアメリカ合衆国は南北アメリカの中で最も個人の権利という指標がの値が高いこと、10年間徐々に減少していることがわかる。 またこのとき南北アメリカ内でアメリカ合衆国と類似した動向をした国はなかった。 文章の方をみていく。(<strong>文章1</strong>) 南北アメリカの国々は指標の値が高い国から低い国まで存在することがわかる。 確かに折れ線を確認すると指標の高い国が多いことがすぐにわかるが、キューバが他の国と比べて極端に低い値をとっていることがわかる。 また、南北アメリカの中で北アメリカには指標の値が高い国が多いことがわかる(<strong>R2</strong>)。<strong>図</strong> このことは選択する地理的範囲を北アメリカに変更すると、実際に確認できる 次にアメリカが南北アメリカの中で指標の値が高いことや、10年間緩やかに減少していることがわかる。(<strong>R4</strong>)</p>
-<p>他の国や指標についてもみていく。 <strong>図</strong>は地理的範囲を<strong>世界</strong>、指標を<strong>情報通信へのアクセス</strong>、注目する国を<strong>日本</strong>にしている。 先ほどと異なってわかる情報として、2013年に指標の値の変化の傾向が変わったことが折れ線からわかる(<strong>R1</strong>)。 こととき、情報通信へのアクセスが伸びることは良いことなので、その上昇率が下がることはよくない変化として黒塗りでドットに表されている。 他にはわかる情報として、似たような動向をしている国に、オーストラリアがあることがわかる。 類似していない国の表示を隠すと、日本とオーストラリアのデータは非常に似ていることが確認できる。(<strong>図</strong>) 次に文章の方をみていく(<strong>文章2</strong>)。 先ほどと同様に世界の国々の中で、オセアニアには指標の値が低い国が多く、ヨーロッパには指標の値が高い国が多いことがわかる。 国の情報として、日本は2011年から2013年にかけてこの指標が大きく上昇したことを文章からも確認できる。</p>
+<figure>
+<img src="img/5_SPI_Time_Series.png" alt="Figure 5: An example of using the system with Personal Rights as the index, the Americas as the geographical area, and the United States as the country of interest. It can be seen from the line chart that the United States has the highest value of Personal Rights in the Americas, and that it has been gradually decreasing for 10 years. It can be also seen that there are countries in the Americas with high and low values of the index, and that there are many countries in North America with high values of the index among the Americas." /><figcaption aria-hidden="true">Figure 5: An example of using the system with Personal Rights as the index, the Americas as the geographical area, and the United States as the country of interest. It can be seen from the line chart that the United States has the highest value of Personal Rights in the Americas, and that it has been gradually decreasing for 10 years. It can be also seen that there are countries in the Americas with high and low values of the index, and that there are many countries in North America with high values of the index among the Americas.</figcaption>
+</figure>
+<p>図5は地理的範囲を<strong>南北アメリカ</strong>、指標を<strong>個人の権利</strong>、注目する国を<strong>アメリカ合衆国</strong>にしている。 折れ線からはアメリカ合衆国は南北アメリカの中で最も個人の権利という指標がの値が高いこと、10年間徐々に減少していることがわかる。 またこのとき南北アメリカ内でアメリカ合衆国と類似した動向をした国はなかった。 文章の方をみていく。(<strong>文章1</strong>) 南北アメリカの国々は指標の値が高い国から低い国まで存在することがわかる。 確かに折れ線を確認すると指標の高い国が多いことがすぐにわかるが、キューバが他の国と比べて極端に低い値をとっていることがわかる。 また、南北アメリカの中で北アメリカには指標の値が高い国が多いことがわかる(<strong>R2</strong>)。 このことは選択する地理的範囲を北アメリカに変更すると確認することができる。 次にアメリカが南北アメリカの中で指標の値が高いことや、10年間緩やかに減少していることがわかる。(<strong>R4</strong>)</p>
+<figure>
+<img src="img/6_SPI_Time_Series.png" alt="Figure 6: A comparison of data from Japan and Australia on access to information and communication shows that they are very similar." /><figcaption aria-hidden="true">Figure 6: A comparison of data from Japan and Australia on access to information and communication shows that they are very similar.</figcaption>
+</figure>
+<p>他の国や指標についてもみていく。 図4は地理的範囲を<strong>世界</strong>、指標を<strong>情報通信へのアクセス</strong>、注目する国を<strong>日本</strong>にしている。 先ほどと異なってわかる情報として、2013年に指標の値の変化の傾向が変わったことが折れ線からわかる(<strong>R1</strong>)。 こととき、情報通信へのアクセスが伸びることは良いことなので、その上昇率が下がることはよくない変化として黒塗りでドットに表されている。 他にはわかる情報として、似たような動向をしている国に、オーストラリアがあることがわかる。 類似していない国の表示を隠すと、日本とオーストラリアのデータは非常に似ていることが確認できる。(図6) 次に文章の方をみていく(<strong>文章2</strong>)。 先ほどと同様に世界の国々の中で、オセアニアには指標の値が低い国が多く、ヨーロッパには指標の値が高い国が多いことがわかる。 国の情報として、日本は2011年から2013年にかけてこの指標が大きく上昇したことを文章からも確認できる。</p>
+<figure>
+<img src="img/7a_SPI_Time_Series.png" alt="Figure 7a:" /><figcaption aria-hidden="true">Figure 7a:</figcaption>
+</figure>
+<figure>
+<img src="img/7b_SPI_Time_Series.png" alt="Figure 7b:" /><figcaption aria-hidden="true">Figure 7b:</figcaption>
+</figure>
+<figure>
+<img src="img/7c_SPI_Time_Series.png" alt="Figure 7c:" /><figcaption aria-hidden="true">Figure 7c:</figcaption>
+</figure>
 <p>最後に別のアプローチでデータを探索していく。 指標を<strong>個人の安全</strong>とし地理的範囲を<strong>ヨーロッパ</strong>とする。 まず折れ線をみると一番データの値が低い国があるのがわかる。 ホバーするとそれがロシアであることがわかり、タップしてみると注目する国が<strong>ロシア</strong>になり、文章として詳細な情報を得ることができる。 文章から、やはりロシアは指標の値がヨーロッパの中で非常に低いことがわかる(<strong>文章3</strong>)。 次にロシアと隣接している国の指標の値が気になり、ロシアの北西に位置する<strong>フィンランド</strong>を地図から選択してみる。 するとフィンランドはロシアとは異なり、指標の値が高いことがわかる。 また地図より、フィンランドと値が近くデータの変動が似ている国がヨーロッパの西から北に固まっていることがわかった(<strong>R3</strong>)。 一方、西側のベルギーという国はフィンランドと値が近くデータの変動が似ている国に含まれていない。 そこでベルギーを地図から選択すると、ベルギー2015年までは周辺諸国と同じような値をとっていたが、2016年で大きく減少していることがわかる。<strong>図</strong></p>
 <h1 id="考察">考察</h1>
 <p>この章では3章で定めたシステム設計の四つの要件をどのように満たしているのか、システムの利点や欠点などを議論し、今後の研究課題について述べる。</p>
@@ -292,7 +326,7 @@ Görtler, Jochen, Marc Spicker, Christoph Schulz, Daniel Weiskopf, and Oliver De
 Gschwandtner, T., and Oliver Erhart. 2018. <span>“Know Your Enemy: Identifying Quality Problems of Time Series Data.”</span> <em>2018 IEEE Pacific Visualization Symposium (PacificVis)</em>, 205–14.
 </div>
 <div id="ref-hosokawa2020scalable" class="csl-entry" role="doc-biblioentry">
-Hosokawa, Natsuki, Kohei Arimoto, and Ken Wakita. 2020. <span>“A Scalable" Exploranation" Technique for Hierarchically Indexed Table Data.”</span> In <em>Proceedings of the 13th International Symposium on Visual Information Communication and Interaction</em>, 1–5.
+Hosokawa, Natsuki, Kohei Arimoto, and Ken Wakita. 2020. <span>“A Scalable "Exploranation" Technique for Hierarchically Indexed Table Data.”</span> In <em>Proceedings of the 13th International Symposium on Visual Information Communication and Interaction</em>, 1–5.
 </div>
 <div id="ref-latif2019interactive" class="csl-entry" role="doc-biblioentry">
 Latif, Shahid, and Fabian Beck. 2019. <span>“Interactive Map Reports Summarizing Bivariate Geographic Data.”</span> <em>Visual Informatics</em> 3 (1): 27–37.

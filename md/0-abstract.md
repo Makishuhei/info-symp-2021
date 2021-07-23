@@ -1,10 +1,16 @@
 ##### ABSTRACT {#abstract .af1}
 
-This template is a guide to prepare manuscript for Visualization
-Symposium Japan. Here, please write the abstract serving as an index and
-as a summary of the present paper. It should be as long as approximately
-150 words. 
+<!-- データを理解しやすくするために様々な可視化手法が使われているが、スケーラビリティやデータの構造の関係で、伝えたいデータの特徴を可視化から認識することが難しい可能性がある。
+そこで可視化に加えて、データの特徴を言葉によって提供する研究が行われている。
+本論文では、Social Progress Indexというアイテム数の多い時系列データを例に、データの分析をサポートする可視化と、テンプレートベースで生成したデータの要約文を提供するシステムを提案する。
+また本論文では、時系列データの形からデータを探索する方法、データの要約文を生成するテンプレートの構成について説明する。
+最後にケーススタディを通してシステムの用性を示す。 -->
 
-データを理解しやすくするために様々な可視化手法が使われているが、データ構造の複雑さやデータの多さなどの要因のせいで、意図する情報を全てユーザが可視化から認識することは難しい。そこで可視化に加えてデータから文章を生成し、データに含まれる有益である可能性のある情報を、前もってユーザに提供するような研究が行われている。本論文のシステムでは、多次元の時系列データに関してデータの分布や変動の分析をサポートする可視化とともに、そのデータからテンプレートベースで生成した要約文を提供する。論文中では、時系列データの類似度の計算方法や時系列データを可視化した折れ線の形からデータを探索する方法、要約を生成するテンプレートの構成について説明する。そして最後にシステム全体をSocial Progress Indexというデータを用いたユースケースを通して説明する。
+Various visualization methods are used to make data easier to understand, but due to scalability and data structure, it may be difficult to recognize the features of the data we want to convey from the visualization.
+Therefore, in addition to visualization, research has been done to provide the features of data by words.
+In this paper, using the Social Progress Index, a time-series data with a large number of items as an example, we propose a system that provides visualizations to support data analysis and template-based summary sentences of the data.
+In this paper, we also explain how to search for data in the form of time series data and how to construct templates to generate summary text of the data.
+Finally, we show the usability of the system through a case study.
 
-to English
+
+Keyword: Time Series Data, Explanatory Visualization
